@@ -1,6 +1,11 @@
 #define VREF 3.3   // analog reference voltage(Volt) of the ADC
 #define SCOUNT 30  // sum of sample point
 
+#ifndef TDS_H
+#define TDS_H
+void readvalues(int (&analogBuffer)[SCOUNT]);  // Function declaration with reference parameter
+#endif
+
 
 // initialize variables needed for reading and conversion
 int analogBuffer[SCOUNT];      // store the analog value in the array, read from ADC

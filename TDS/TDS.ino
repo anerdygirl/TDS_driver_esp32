@@ -1,10 +1,5 @@
 #include "TDS.h"
 
-#ifndef TDS_H
-#define TDS_H
-void readvalues(int (&analogBuffer)[SCOUNT]);  // Function declaration with reference parameter
-#endif
-
 void setup() {
   Serial.begin(115200);
   Serial.setTimeout(10);
