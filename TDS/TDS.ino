@@ -1,7 +1,7 @@
 #include "TDS.h"
 
-#ifndef ARRAY_MANIPULATION_H
-#define ARRAY_MANIPULATION_H
+#ifndef TDS_H
+#define TDS_H
 void readvalues(int (&analogBuffer)[SCOUNT]);  // Function declaration with reference parameter
 #endif
 
