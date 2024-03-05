@@ -1,8 +1,8 @@
 This is a custom driver/library for sen0277 TDS sensor on ESP32. It's best to use it with ADC module and a waterproof temperature sensor for accurate readings. Source code from: https://wiki.dfrobot.com/Gravity__Analog_TDS_Sensor___Meter_For_Arduino_SKU__SEN0244
 
-TDS.ino is a "main" program to test the functions in TDS.h
+`TDS.ino` is a "main" program to test the functions in TDS.h
 
-TDS.h contains the functions
+`TDS.h` contains the functions
 
 
 ## variables:
