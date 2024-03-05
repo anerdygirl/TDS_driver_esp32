@@ -4,32 +4,38 @@ TDS.ino is a "main" program to test the functions in TDS.h
 
 TDS.h contains the functions
 
-variables:
 
-int analogBuffer[SCOUNT]: array of SCOUNT size to store analog values read by the ADC
+## variables:
 
-int analogBufferTemp[SCOUNT]: a copy of analogBuffer to apply the median filtering on
+**int analogBuffer[SCOUNT]:** array of SCOUNT size to store analog values read by the ADC
 
-int analogBufferIndex = 0: to index analogBuffer
+**int analogBufferTemp[SCOUNT]:** a copy of analogBuffer to apply the median filtering on
 
-int copyIndex = 0: to index analogBufferTemp
+**int analogBufferIndex = 0:** to index analogBuffer
 
-float voltage = 0
+**int copyIndex = 0:** to index analogBufferTemp
 
-float tdsValue = 0
+**float voltage = 0**: initialized voltage value
 
-float temperature = 16: current temperature for compensation. you can use a temperature sensor and adjust value as needed
+**float tdsValue = 0**: initialized TDS value
 
-functions:
+**float temperature = 16:** current temperature for compensation. You can use a temperature sensor and adjust value as needed
 
-void setupTDS(int pin): initializes sensor pin
 
-float getMedian(int bArray[], int iFilterLen): median filtering algorithm. takes int array bArray off size iFilterLen and outputs median bTemp
+## functions:
 
-float getTDSValue(float voltage): gets final TDS value from voltage 
+**void setupTDS(int pin):** initializes sensor pin
 
-float getFinalVoltage(float avg, float coeff): compensates for temperature variations. takes average voltage and coefficient as input and computes final voltage, which will be used to calculate TDS 
+**void calibrate():** calibrates the TDS sensor before use. Will use the TDS values of milk, water and engine coolant variants for reference.
 
-float TDSCoeff(float temperature): calculates TDS coefficient. formula computed at 25°C 
+**void readvalues(int (&analogBuffer)[SCOUNT]):** reads the  analog values from the sensor and stores them in the analogBuffer array for the median filtering.
 
-float avgVoltage(int buffer[], int count, float vref): calculates average voltage read from the sensor after applying median filtering and voltage conversion. takes the array of readings which will go through median filtering, median filter size and ADC voltage reference as inputs.
+**float getMedian(int bArray[], int iFilterLen):** median filtering algorithm. takes int array bArray off size iFilterLen and outputs median bTemp
+
+**float getTDSValue(float voltage):** gets final TDS value from voltage 
+
+**float getFinalVoltage(float avg, float coeff):** compensates for temperature variations. Takes average voltage and coefficient as input and computes final voltage, which will be used to calculate TDS 
+
+**float TDSCoeff(float temperature):** calculates TDS coefficient. formula computed at 25°C 
+
+**float avgVoltage(int buffer[], int count, float vref):** calculates average voltage read from the sensor after applying median filtering and voltage conversion. takes the array of readings which will go through median filtering, median filter size and ADC voltage reference as inputs.
