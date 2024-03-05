@@ -1,22 +1,21 @@
 #include "TDS.h"
 
+#ifndef ARRAY_MANIPULATION_H
+#define ARRAY_MANIPULATION_H
+void readvalues(int (&analogBuffer)[SCOUNT]);  // Function declaration with reference parameter
+#endif
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
+  Serial.setTimeout(10);
   setupTDS(27);
 }
 
 void loop() {
-  // read a bunch of analog values and store them in the buffer every 40ms
-  static unsigned long analogSampleTimepoint = millis();
-  if (millis() - analogSampleTimepoint > 40U) {
-    analogSampleTimepoint = millis();
-    analogBuffer[analogBufferIndex] = analogRead(27);  //read the analog value and store into the buffer
-    analogBufferIndex++;
-    if (analogBufferIndex == SCOUNT) {
-      analogBufferIndex = 0;
-    }
-  }
+  
   // get the latest reading every 800ms and the avg voltage by using the median filter algorithm
+  readvalues(analogBuffer);
+  
   static unsigned long printTimepoint = millis();
   if (millis() - printTimepoint > 800U) {
     printTimepoint = millis();
@@ -25,12 +24,16 @@ void loop() {
       voltage = avgVoltage(analogBufferTemp, SCOUNT, VREF);
     }
   }
-  // calculate temperture coeff
+
+  // calculate temperture coeff. for reading variation due to temperature changes
   float coeff = TDSCoeff(temperature);
+
   // get final voltage value
   voltage = getFinalVoltage(voltage, coeff);
+
   // convert voltage to TDS
   tdsValue = getTDSValue(voltage);
+
   // print results
   Serial.print("TDS Value:");
   Serial.print(tdsValue, 0);

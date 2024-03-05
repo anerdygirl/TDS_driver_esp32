@@ -1,6 +1,7 @@
 #define VREF 3.3   // analog reference voltage(Volt) of the ADC
 #define SCOUNT 30  // sum of sample point
 
+
 // initialize variables needed for reading and conversion
 int analogBuffer[SCOUNT];      // store the analog value in the array, read from ADC
 int analogBufferTemp[SCOUNT];  // analogBuffer after applying median filtering
@@ -11,8 +12,49 @@ float voltage = 0;
 float tdsValue = 0;
 float temperature = 16;  // current temperature for compensation. you can use a temperature sensor and adjust as needed
 
+
 void setupTDS(int pin) {
   pinMode(pin, INPUT);
+}
+
+void calibrate(){
+  /* read reference body
+      if ref isn't available -> print "reference NA. enter an existing reference"
+    periodically:
+      read tds
+      compare reading with ref_tds
+        if reading unstable -> keep "calibrating"
+        else (if reading stable and matching): print "calibration complete" */
+  String ref[3] = {"MILK", "WATER", "COOLANT"};
+  if (Serial.available() >0){
+    String str = Serial.readString();
+    bool isinref = false;
+    for (int i = 0; i < 3; i++) {
+      if (str == ref[i]) 
+        isinref = true;
+    }
+    if (isinref == false){
+      Serial.println("reference NA. enter an existing reference");
+      // call the function again...
+    }
+    else{
+      // program the algorithm
+    }
+  }
+}
+
+static unsigned long analogSampleTimepoint = millis();
+void readvalues(int (&analogBuffer)[SCOUNT]){
+  // read a bunch of analog values and store them in the buffer every 40ms
+  
+  if (millis() - analogSampleTimepoint > 40U) {
+    analogSampleTimepoint = millis();
+    analogBuffer[analogBufferIndex] = analogRead(27);  //read the analog value and store into the buffer
+    analogBufferIndex++;
+    if (analogBufferIndex == SCOUNT) {
+      analogBufferIndex = 0;
+    }
+  }
 }
 
 // filters an array of readings to get a stable analog value
