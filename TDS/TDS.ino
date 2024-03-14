@@ -9,16 +9,7 @@ void setup() {
 void loop() {
   
   // get the latest reading every 800ms and the avg voltage by using the median filter algorithm
-  readvalues(analogBuffer);
-  
-  static unsigned long printTimepoint = millis();
-  if (millis() - printTimepoint > 800U) {
-    printTimepoint = millis();
-    for (copyIndex = 0; copyIndex < SCOUNT; copyIndex++) {
-      analogBufferTemp[copyIndex] = analogBuffer[copyIndex];
-      voltage = avgVoltage(analogBufferTemp, SCOUNT, VREF);
-    }
-  }
+  readanalogvalues(analogBuffer);
 
   // calculate temperture coeff. for reading variation due to temperature changes
   float coeff = TDSCoeff(temperature);
